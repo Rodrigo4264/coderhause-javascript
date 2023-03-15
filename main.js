@@ -1,108 +1,77 @@
-let control=0
-while( control==0){
-    const fechanacimiento = prompt("ingrese su año denacimiento")
+const productos =[
+  {id: 1 ,nombre:"salame", precio: 1200},
+  {id: 2, nombre:"cocacola", precio: 550},
+  {id: 3, nombre:"cerveza", precio: 450},
+  {id: 2, nombre:"chocolate", precio: 250},
+];
 
-    if (fechanacimiento >= 2023){
-        alert("la fecha ingresada no es correcta")
-    }else if (fechanacimiento>2005 ) {
-      alert("usted es menor de edad para ingrsar")
-      control =prompt("si quiere verificar su dato presione 0 si no 1" )
-    } else {
-      alert("usted es mayor de edad")
-      const nombre = prompt("ingrese su nombre")
-        saludar(nombre)
-        
-        repetirOper = 0
-        while(repetirOper==0){
-            const operacion= prompt("selecciones la operacion que desea: suma=1, resta=2, multiplicacion=3, division=4, promedio=5")
-            operation(operacion)
-            repetirOper = prompt("si quiere realizar otra operacion presione 0 si no 1" )
-        }
+let carrito = [];
+let total= 0
 
-      break
-    }
-
+//inicia el codigo preguntaodo si quiere comprar 
+let seleccion = prompt("Hola deces comprar algun producto? ( si/no)")
+while(seleccion != "si" && seleccion != "no"){
+  alert("porfavor ingrese una respuesta valida")
+  seleccion = prompt("Hola deces comprar algo (si/no)")
+}
+// verifica la respuesta del usuario
+if (seleccion =="si"){
+  alert("nuestra lista de producctos para que pueda realizar su compra")
+  let muestraLosProductos = productos.map((producto) => producto.nombre + " $" + producto.precio)
+  alert(muestraLosProductos.join(" - "))
+}else if (seleccion == "no"){
+  alert("Gracais por venir, nos vemos pronto")
 }
 
-function saludar (nombre){
-    alert("hola " + nombre + ", bienvenido ")
+//si la serpuesta es si, empieza a comparar la entrada con los prductos que hay 
+while(seleccion != "no"){
+let precio =0
+let producto = prompt("Agrega un producto a tu carrito")
+let compararConStock = productos.find( elemento=> {
+  return elemento.nombre==producto.toLocaleLowerCase()
+})
+verExistencia(compararConStock)
 }
 
-function operation(operacion){
-    let k=0
-    let i=1
-    let n=0
-    let contador= 0
-    
-    switch(operacion) {
-        case "1":
-            alert("a continuacion ingrese un numero para empezar la operacion, se le mostrara la suma parcial y despues podra ingresar otro numero para ir sumando, si desea terminar la operacion ingrese cero")
-          while(i != 0){
-                 numero = parseFloat(prompt("ingrese un numero"))
-                 i= numero
-                 n= numero + n
-                alert("resultado: " + n)
-          }
-          break;
-        case "2":
-            alert("a continuacion ingrese un numero para empezar la operacion, se le mostrara la resta parcial y despues podra ingresar otro numero para ir sumando, si desea terminar la operacion ingrese cero") 
-          while(i != 0){
-                 numero = parseFloat(prompt("ingrese un numero"))
-                if (k==0){
-                    k=1
-                    n=numero
-                }else{
-                 i= numero
-                 n= n - numero
-                }
-                alert("resultado: " + n)
-          }
-          break;
-          case "3":
-            alert("a continuacion ingrese un numero para empezar la operacion, se le mostrara la multiplicacion parcial y despues podra ingresar otro numero para ir sumando, si desea terminar la operacion ingrese cero")
-            while(i != 0){
-                   numero = parseFloat(prompt("ingrese un numero"))
-                  if (k==0){
-                      k=1
-                      n=numero
-                  }else{
-                   i= numero
-                   n= n * numero
-                  }
-                  alert("resultado: " + n)
-            }
-          break;
-          case "4":
-            alert("a continuacion ingrese un numero para empezar la operacion, se le mostrara la division parcial y despues podra ingresar otro numero para ir sumando, si desea terminar la operacion ingrese cero")
-            while(i != 0){
-                numero = parseFloat(prompt("ingrese un numero"))
-               if (k==0){
-                   k=1
-                   n=numero
-               }else{
-                i= numero
-                n= n / numero
-               }
-               alert("resultado: " + n)
-         }
-          break;
-          case "5":
-            alert("a continuacion ingrese un numero para empezar la operacion, al ternimar ingrese t")
-        let m=0
-         do{
-            numero =prompt("ingrese un numero")
-               if (numero=="t"){
-                   let promedio = n/contador
-                   alert("el promedio es: " + promedio)
-                   break
-               }else{
-                numero=parseFloat(numero)
-                contador ++
-                n= numero + n 
-                alert("suma: "+ n + "contador" + contador)}
-        }while(m==0)
-          break;
-        default:
-          alert("la opcion seleccionada no coresponde a ninguna operacion")
-      }
+listaFinal(carrito)
+
+
+
+
+
+
+
+
+//espa parte del codigo agrega el producto al carro 
+//y si no existe te informa
+function verExistencia(compararConStock){
+if (compararConStock != undefined){
+ agregarAlCarrito(compararConStock)
+}else {
+  alert("El producto no se encuentra en el stock")
+  seleccion = prompt("Desea seguis comprando")
+}
+}
+
+//esta funcion agrega el producto al carrito 
+function agregarAlCarrito(compararConStock){
+  let cantidad = prompt("que cantidad decea de: " + compararConStock.nombre)
+  compararConStock.cantidad = cantidad
+  carrito.push(compararConStock)
+  seleccion = prompt("Desea agregar otro producto")
+  
+  console.log(compararConStock)
+  console.log(carrito)
+}
+
+//te da la lista final de la compra y el precio 
+function listaFinal(carrito){
+  let listaDeCompras = carrito.map((item)=>item.nombre + " $"+item.precio + " Qty: " + item.cantidad)
+  alert(  listaDeCompras.join(" - "))
+  
+  carrito.forEach(item => {
+      total += item.precio*item.cantidad
+  });
+  
+  alert("total: " + total)
 }
